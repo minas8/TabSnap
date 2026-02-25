@@ -1,0 +1,78 @@
+{
+  "extension_name": {
+    "message": "TabSnap"
+  },
+  "extension_description": {
+    "message": "שמירה ושחזור של חלונות וטאבים בדפדפן"
+  },
+  "title_main": {
+    "message": "TabSnap - ניהול חלונות"
+  },
+
+  "button_save_active_window": {
+    "message": "שמור חלון נוכחי"
+  },
+  "button_save_all_windows": {
+    "message": "שמור את כל החלונות"
+  },
+  "button_save_selected_windows": {
+    "message": "שמור חלונות נבחרים"
+  },
+  "button_send_window_email": {
+    "message": "שלח חלון נוכחי בדוא״ל"
+  },
+  "button_confirm_save": {
+    "message": "אשר שמירה"
+  },
+
+  "checkbox_close_windows_after_save": {
+    "message": "סגור חלון/נות לאחר שמירה"
+  },
+  "label_select_windows": {
+    "message": "בחר חלון/נות לשמירה"
+  },
+
+  "title_restore_section": {
+    "message": "שחזור חלון מקובץ"
+  },
+  "text_drag_drop_hint": {
+    "message": "גרור קובץ JSON לכאן או"
+  },
+  "button_choose_file": {
+    "message": "בחר קובץ"
+  },
+  
+  "title_saved_windows": {
+    "message": "שמירות קודמות (גיבוי מקומי)"
+  },
+  "button_open_saved_window": {
+    "message": "פתח חלון"
+  },
+  "button_delete_saved_window": {
+    "message": "מחק חלון"
+  },
+  "button_clear_local_backups": {
+    "message": "נקה את כל הגיבויים המקומיים"
+  },
+  "text_no_saved_windows": {
+    "message": "אין חלונות שמורים"
+  },
+  
+  "message_windows_saved_multiple": {
+    "message": "נשמרו {count} חלונות. נוצרו {count} קבצים."
+  },
+  "message_window_restored": {
+    "message": "החלון שוחזר בהצלחה"
+  },
+
+  "error_invalid_json_file": {
+    "message": "קובץ JSON לא תקין"
+  },
+  "error_restore_failed": {
+    "message": "שחזור החלונות נכשל"
+  },
+  "error_no_windows_selected": {
+    "message": "לא נבחרו חלונות"
+  }
+
+}

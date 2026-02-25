@@ -1,0 +1,78 @@
+{
+  "extension_name": {
+    "message": "TabSnap"
+  },
+  "extension_description": {
+    "message": "Save and restore your Chrome windows and tabs easily."
+  },
+  "title_main": {
+    "message": "TabSnap - Window Management"
+  },
+
+  "button_save_active_window": {
+    "message": "Save Current Window"
+  },
+  "button_save_all_windows": {
+    "message": "Save All Windows"
+  },
+  "button_save_selected_windows": {
+    "message": "Save Selected Windows"
+  },
+  "button_send_window_email": {
+    "message": "Send Current Window by Email"
+  },
+  "button_confirm_save": {
+    "message": "Confirm Save"
+  },
+
+  "checkbox_close_windows_after_save": {
+    "message": "Close windows after saving"
+  },
+  "label_select_windows": {
+    "message": "Select windows to save"
+  },
+
+  "title_restore_section": {
+    "message": "Restore"
+  },
+  "text_drag_drop_hint": {
+    "message": "Drag a JSON file here to restore windows"
+  },
+  "button_choose_file": {
+    "message": "Choose File"
+  },
+  
+  "title_saved_windows": {
+    "message": "Previous Saves (Local Backup)"
+  },
+  "button_open_saved_window": {
+    "message": "Open"
+  },
+  "button_delete_saved_window": {
+    "message": "Delete"
+  },
+  "button_clear_local_backups": {
+    "message": "Clear All Local Backups"
+  },
+  "text_no_saved_windows": {
+    "message": "No saved windows yet"
+  },
+  
+  "message_windows_saved_multiple": {
+    "message": "Saved {count} windows. Created {count} files."
+  },
+  "message_window_restored": {
+    "message": "Window restored successfully"
+  },
+
+  "error_invalid_json_file": {
+    "message": "Invalid JSON file"
+  },
+  "error_restore_failed": {
+    "message": "Failed to restore windows"
+  },
+  "error_no_windows_selected": {
+    "message": "No windows selected"
+  }
+
+}

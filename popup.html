@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="extension_name"></title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 10px;
+        width: 400px;
+      }
+      h1 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      h3 {
+        margin-bottom: 5px;
+      }
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        margin-right: 5px;
+      }
+      .material-icons {
+        font-size: 18px;
+        vertical-align: middle;
+      }
+      .delete-btn .material-icons {
+        color: #c62828;
+      }
+      .restore-btn .material-icons {
+        color: #2e7d32;
+      }
+      .main-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 10px;
+      }
+      .main-buttons button,
+      #confirmSaveSelectedBtn,
+      #clearLocalBtn {
+        flex: 1 1 auto;
+        padding: 8px 12px;
+        border: 1px solid #999;
+        border-radius: 4px;
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+      #confirmSaveSelectedBtn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      #savedList {
+        margin-top: 5px;
+      }
+      .window-entry {
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+      }
+      ul {
+        margin: 5px 0;
+        padding-left: 20px;
+      }
+      .restore-area {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      #filePicker {
+        display: none;
+      }
+      .window-selector {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin-bottom: 10px;
+      }
+      .window-item {
+        display: flex;
+        align-items: center;
+      }
+      .window-item input[type="checkbox"] {
+        margin-right: 10px;
+        padding: 0px;
+      }
+      .close-after-save {
+        margin-top: 0px;
+        margin-bottom: 5px;
+      }
+      #confirmSaveSelectedBtn {
+        margin-top: 0px;
+        margin-bottom: 15px;
+      }
+      #messageBox {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body dir="rtl">
+    <h1 data-i18n="title_main"></h1>
+
+    <div class="main-buttons">
+      <button id="saveCurrentBtn" data-i18n="button_save_active_window">
+        שמור חלון נוכחי
+      </button>
+      <button id="saveSelectedBtn" data-i18n="button_save_selected_windows">
+        שמור חלונות נבחרים
+      </button>
+      <button id="saveAllBtn" data-i18n="button_save_all_windows">שמור את כל החלונות</button>
+      <!-- <button id="sendSingleByEmailBtn" data-i18n="button_send_window_email"></button> -->
+    </div>
+
+    <div class="close-after-save">
+      <input type="checkbox" id="closeAfterSaveCheckbox" />
+      <label
+        for="closeAfterSaveCheckbox"
+        data-i18n="checkbox_close_windows_after_save"
+      >סגור חלון/נות לאחר שמירה</label>
+    </div>
+
+    <div class="note">
+      הערה: בשמירה של חלונות מרובים, אם הדפדפן מוגדר לבקש מיקום שמירה לכל קובץ,
+      ייתכן שהקבצים יישמרו בתיקיית ההורדות הראשית ובשם ברירת מחדל.
+    </div>
+
+    <div id="windowSelectionArea" style="display: none">
+      <h3>בחר מהרשימה חלונות לשמירה</h3>
+      <div class="window-selector" id="windowSelectorList"></div>
+      <div class="main-buttons">
+        <button
+          id="confirmSaveSelectedBtn"
+          data-i18n="button_confirm_save"
+        ></button>
+      </div>
+    </div>
+
+    <div id="messageBox"></div>
+
+    <h3>שחזור חלון מקובץ</h3>
+    <div class="restore-area" id="restoreArea">
+      <p>גרור קובץ JSON לכאן או <a href="#" id="browseLink">בחר קובץ</a></p>
+      <input type="file" id="filePicker" accept=".json" />
+    </div>
+
+    <h2 data-i18n="title_saved_windows">חלונות שמורים</h2>
+    <button id="clearLocalBtn" data-i18n="button_clear_local_backups">נקה את כל הגיבויים המקומיים</button>
+    <div id="savedList"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
