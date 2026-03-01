@@ -137,7 +137,10 @@ function loadSavedWindows() {
                 entry.className = "window-entry";
 
                 const title = document.createElement("strong");
-                title.textContent = new Date(savedAt).toLocaleString();
+                const tabCount = Array.isArray(tabs) ? tabs.length : 0;
+                title.textContent =
+                    `${new Date(savedAt).toLocaleString()} | ${tabCount} tabs`;
+
                 entry.appendChild(title);
 
                 const tabList = document.createElement("ul");
