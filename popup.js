@@ -1,3 +1,15 @@
+function applyDirection() {
+    const lang = chrome.i18n.getUILanguage();
+
+    if (lang.startsWith("he") || lang.startsWith("ar")) {
+        document.documentElement.dir = "rtl";
+    } else {
+        document.documentElement.dir = "ltr";
+    }
+}
+
+applyDirection();
+
 window.addEventListener("error", e => {
     console.error("[popup] uncaught error:", e.error);
 });

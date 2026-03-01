@@ -8,108 +8,188 @@
       rel="stylesheet"
     />
     <style>
+      /* =========================
+         Base Layout
+      ========================= */
+
       body {
         font-family: Arial, sans-serif;
-        padding: 10px;
-        width: 400px;
+        padding: 12px;
+        inline-size: 400px;
+        box-sizing: border-box;
       }
+
       h1 {
         font-size: 18px;
-        margin-bottom: 10px;
+        margin-block-end: 12px;
       }
+
+      h2 {
+        font-size: 16px;
+        margin: 0;
+      }
+
       h3 {
-        margin-bottom: 5px;
+        font-size: 14px;
+        margin-block: 10px 6px;
       }
+
+      p {
+        margin: 0;
+      }
+
+      /* =========================
+         Buttons
+      ========================= */
+
       button {
-        background: none;
-        border: none;
         cursor: pointer;
-        padding: 5px;
-        margin-right: 5px;
-      }
-      .material-icons {
-        font-size: 18px;
-        vertical-align: middle;
-      }
-      .delete-btn .material-icons {
-        color: #c62828;
-      }
-      .restore-btn .material-icons {
-        color: #2e7d32;
-      }
-      .main-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        margin-bottom: 10px;
-      }
-      .main-buttons button,
-      #confirmSaveSelectedBtn,
-      #clearLocalBtn {
-        flex: 1 1 auto;
         padding: 8px 12px;
         border: 1px solid #999;
-        border-radius: 4px;
+        border-radius: 6px;
         background-color: #f0f0f0;
-        font-weight: bold;
+        font-weight: 600;
+        font-size: 13px;
       }
-      #confirmSaveSelectedBtn:disabled {
+
+      button:disabled {
         opacity: 0.5;
         cursor: not-allowed;
-        pointer-events: none;
       }
-      #savedList {
-        margin-top: 5px;
+
+      /* Grid for main buttons */
+
+      .main-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-block-end: 12px;
       }
-      .window-entry {
-        border-bottom: 1px solid #ccc;
-        margin-bottom: 5px;
-        padding-bottom: 5px;
+
+      #confirmSaveSelectedBtn {
+        margin-block: 6px 12px;
       }
-      ul {
-        margin: 5px 0;
-        padding-left: 20px;
+
+      /* =========================
+         Section Header
+      ========================= */
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-block: 16px 8px;
       }
+
+      .section-header button {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      /* =========================
+         Checkbox Area
+      ========================= */
+
+      .close-after-save {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-block: 6px 12px;
+      }
+
+      .note {
+        font-size: 12px;
+        line-height: 1.4;
+        margin-block-end: 12px;
+      }
+
+      /* =========================
+         Window Selector
+      ========================= */
+
+      .window-selector {
+        max-block-size: 200px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 6px;
+        border-radius: 6px;
+        margin-block-end: 10px;
+      }
+
+      .window-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* =========================
+         Restore Area
+      ========================= */
+
       .restore-area {
         border: 2px dashed #ccc;
         padding: 20px;
         text-align: center;
-        margin-bottom: 5px;
+        border-radius: 8px;
+        margin-block-end: 12px;
       }
+
       #filePicker {
         display: none;
       }
-      .window-selector {
-        max-height: 200px;
-        overflow-y: auto;
-        border: 1px solid #ccc;
-        padding: 5px;
-        margin-bottom: 10px;
+
+      /* =========================
+         Saved Windows List
+      ========================= */
+
+      #savedList {
+        margin-block-start: 6px;
       }
-      .window-item {
-        display: flex;
-        align-items: center;
+
+      .window-entry {
+        background-color: #f7f9fb;
+        border-radius: 8px;
+        padding: 10px;
+        margin-block-end: 10px;
       }
-      .window-item input[type="checkbox"] {
-        margin-right: 10px;
-        padding: 0px;
+
+      .window-entry ul {
+        margin-block: 6px 0;
+        padding-inline-start: 18px;
       }
-      .close-after-save {
-        margin-top: 0px;
-        margin-bottom: 5px;
+
+      /* =========================
+         Icons
+      ========================= */
+
+      .material-icons {
+        font-size: 18px;
+        vertical-align: middle;
       }
-      #confirmSaveSelectedBtn {
-        margin-top: 0px;
-        margin-bottom: 15px;
+
+      .delete-btn .material-icons {
+        color: #c62828;
       }
+
+      .restore-btn .material-icons {
+        color: #2e7d32;
+      }
+
+      /* =========================
+         Messages
+      ========================= */
+
       #messageBox {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-block: 10px;
+        font-size: 13px;
       }
     </style>
   </head>
-  <body dir="rtl">
+  <body>
     <h1 data-i18n="title_main"></h1>
+
+    <!-- Save Section -->
+    <h3 data-i18n="title_save_section">שמירת חלונות</h3>
 
     <div class="main-buttons">
       <button id="saveCurrentBtn" data-i18n="button_save_active_window">
@@ -118,7 +198,9 @@
       <button id="saveSelectedBtn" data-i18n="button_save_selected_windows">
         שמור חלונות נבחרים
       </button>
-      <button id="saveAllBtn" data-i18n="button_save_all_windows">שמור את כל החלונות</button>
+      <button id="saveAllBtn" data-i18n="button_save_all_windows">
+        שמור את כל החלונות
+      </button>
       <!-- <button id="sendSingleByEmailBtn" data-i18n="button_send_window_email"></button> -->
     </div>
 
@@ -127,7 +209,9 @@
       <label
         for="closeAfterSaveCheckbox"
         data-i18n="checkbox_close_windows_after_save"
-      >סגור חלון/נות לאחר שמירה</label>
+      >
+        סגור חלונות לאחר השמירה
+      </label>
     </div>
 
     <div class="note">
@@ -136,7 +220,7 @@
     </div>
 
     <div id="windowSelectionArea" style="display: none">
-      <h3>בחר מהרשימה חלונות לשמירה</h3>
+      <h3 data-i18n="title_select_windows">בחר מהרשימה חלונות לשמירה</h3>
       <div class="window-selector" id="windowSelectorList"></div>
       <div class="main-buttons">
         <button
@@ -148,14 +232,25 @@
 
     <div id="messageBox"></div>
 
-    <h3>שחזור חלון מקובץ</h3>
+    <!-- Restore Section -->
+    <h3 data-i18n="title_restore_from_file">שחזור חלון מקובץ</h3>
+
     <div class="restore-area" id="restoreArea">
-      <p>גרור קובץ JSON לכאן או <a href="#" id="browseLink">בחר קובץ</a></p>
+      <p>
+        גרור קובץ JSON לכאן או
+        <a href="#" id="browseLink">בחר קובץ</a>
+      </p>
       <input type="file" id="filePicker" accept=".json" />
     </div>
 
-    <h2 data-i18n="title_saved_windows">חלונות שמורים</h2>
-    <button id="clearLocalBtn" data-i18n="button_clear_local_backups">נקה את כל הגיבויים המקומיים</button>
+    <!-- Saved Windows Section -->
+    <div class="section-header">
+      <h2 data-i18n="title_saved_windows">חלונות שמורים</h2>
+      <button id="clearLocalBtn" data-i18n="button_clear_local_backups">
+        נקה את כל הגיבויים המקומיים
+      </button>
+    </div>
+
     <div id="savedList"></div>
 
     <script src="popup.js"></script>
