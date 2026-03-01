@@ -1,3 +1,15 @@
+function applyDirection() {
+    const lang = chrome.i18n.getUILanguage();
+
+    if (lang.startsWith("he") || lang.startsWith("ar")) {
+        document.documentElement.dir = "rtl";
+    } else {
+        document.documentElement.dir = "ltr";
+    }
+}
+
+applyDirection();
+
 window.addEventListener("error", e => {
     console.error("[popup] uncaught error:", e.error);
 });
@@ -125,7 +137,10 @@ function loadSavedWindows() {
                 entry.className = "window-entry";
 
                 const title = document.createElement("strong");
-                title.textContent = new Date(savedAt).toLocaleString();
+                const tabCount = Array.isArray(tabs) ? tabs.length : 0;
+                title.textContent =
+                    `${new Date(savedAt).toLocaleString()} | ${tabCount} tabs`;
+
                 entry.appendChild(title);
 
                 const tabList = document.createElement("ul");
