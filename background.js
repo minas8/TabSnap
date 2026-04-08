@@ -51,6 +51,17 @@ function createFileName(title) {
     return `${cleanedTitle}.json`;
 }
 
+// // Function to handle messages
+// function notifyUser(title, message, type = "basic") {
+
+//     chrome.notifications.create({
+//         type: "basic",
+//         iconUrl: "icons/icon128.png",
+//         title,
+//         message
+//     });
+// }
+
 // Function to build data model 
 function buildWindowData(window) {
     return {
@@ -231,56 +242,66 @@ function resolveTabUrl(url, index, activeIndex) {
     );
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender) => {
+
+    // Save active window
     if (message.action === "saveSingle") {
-        saveActiveWindow({ closeAfterSave: message.closeAfterSave })
-        .then(() => sendResponse({ status: "success" }))
-        .catch(err =>
-            sendResponse({ status: "error", message: err.message })
-        );
-        return true;
+        return saveActiveWindow({
+            closeAfterSave: message.closeAfterSave
+        })
+        .then(() => ({
+            status: "success"
+        }))
+        .catch(err => ({
+            status: "error",
+            message: err.message
+        }));
     }
 
+    // Save multiple windows
     if (message.action === "saveAll" || message.action === "saveSelected") {
-        chrome.windows.getAll({ populate: true }, async (windows) => {
 
-            let windowsToSave;
+        return new Promise((resolve) => {
 
-            if (message.action === "saveSelected") {
-                windowsToSave = windows.filter(w =>
-                    message.windowIds.includes(w.id)
-                );
-            } else {
-                windowsToSave = windows;
-            }
+            chrome.windows.getAll({ populate: true }, async (windows) => {
 
-            if (!windowsToSave || windowsToSave.length === 0) {
-                sendResponse({
-                    successCount: 0,
-                    totalCount: 0,
-                    failedWindowIds: []
+                let windowsToSave;
+
+                if (message.action === "saveSelected") {
+                    windowsToSave = windows.filter(w =>
+                        message.windowIds.includes(w.id)
+                    );
+                } else {
+                    windowsToSave = windows;
+                }
+
+                if (!windowsToSave || windowsToSave.length === 0) {
+                    resolve({
+                        successCount: 0,
+                        totalCount: 0,
+                        failedWindowIds: []
+                    });
+                    return;
+                }
+
+                const summary = await saveMultipleWindows(windowsToSave, {
+                    saveAs: false,
+                    closeAfterSave: message.closeAfterSave
                 });
-                return;
-            }
 
-            const summary = await saveMultipleWindows(windowsToSave, {
-                saveAs: false,
-                closeAfterSave: message.closeAfterSave
+                resolve(summary);
             });
 
-            sendResponse(summary);
         });
 
-        return true;
     }
 
     if (message.action === "restoreTabs") {
+
         const { tabs, activeTabIndex = 0 } = message;
-        // const tabsData = message.tabs;
 
         if (!tabs || tabs.length === 0) {
-            sendResponse({ status: "error" });
-            return;
+            return Promise.resolve({ status: "error" });
         }
 
         const safeActiveIndex =
@@ -288,32 +309,36 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 ? activeTabIndex
                 : 0;
 
-        const firstUrl = resolveTabUrl(
-            tabs[0].url,
-            0,
-            safeActiveIndex
-        );
+        return (async () => {
 
-        chrome.windows.create({ url: firstUrl }, function (newWindow) {
+            const firstUrl = resolveTabUrl(
+                tabs[0].url,
+                0,
+                safeActiveIndex
+            );
 
-            tabs.slice(1).forEach((tabData, indexOffset) => {
-                const index = indexOffset + 1;
+            const newWindow = await chrome.windows.create({
+                url: firstUrl
+            });
 
-                chrome.tabs.create({
+            for (let i = 1; i < tabs.length; i++) {
+
+                const tabData = tabs[i];
+
+                await chrome.tabs.create({
                     windowId: newWindow.id,
                     url: resolveTabUrl(
                         tabData.url,
-                        index,
+                        i,
                         safeActiveIndex
                     ),
-                    active: index === safeActiveIndex,
+                    active: i === safeActiveIndex,
                     pinned: tabData.pinned === true
                 });
-            });
+            }
 
-            sendResponse({ status: "success" });
-        });
+            return { status: "success" };
 
-        return true;
+        })();
     }
 });
