@@ -9,6 +9,9 @@
     "message": "TabSnap - ניהול חלונות"
   },
 
+  "title_save_section": {
+    "message": "שמירת חלונות"
+  },
   "button_save_active_window": {
     "message": "שמור חלון נוכחי"
   },
@@ -24,15 +27,48 @@
   "button_confirm_save": {
     "message": "אשר שמירה"
   },
+  "default_file_prefix": {
+    "message": "TabSnap_window_$1"
+  },
+  "message_saving_windows": {
+    "message": "שומר חלונות, נא להמתין..."
+  },
+  "message_windows_saved_multiple": {
+    "message": "$1 מתוך $2 חלונות נשמרו בהצלחה."
+  },
+  "error_save_all_failed": {
+    "message": "השמירה נכשלה עבור כל החלונות."
+  },
+  "error_background_communication": {
+    "message": "שגיאה בתקשורת עם הרקע."
+  },
+  "message_chrome_default_filename_used": {
+    "message": " עבור הטאב הזה Chrome השתמש בשם הקובץ ברירת מחדל (`download.json`) בשל מגבלות מערכת ההפעלה."
+  },
+  "message_window_saved_success": {
+    "message": "החלון נשמר בהצלחה! $1"
+  },
+  "error_save_window_failed": {
+    "message": "שגיאה בשמירת החלון."
+  },
 
   "checkbox_close_windows_after_save": {
-    "message": "סגור חלון/נות לאחר שמירה"
+    "message": "סגור חלונות לאחר השמירה"
   },
-  "label_select_windows": {
-    "message": "בחר חלון/נות לשמירה"
+  "multiple_windows_comment": {
+    "message": "הערה: בשמירה של חלונות מרובים, אם הדפדפן מוגדר לבקש מיקום שמירה לכל קובץ, ייתכן שהקבצים יישמרו בתיקיית ההורדות הראשית ובשם ברירת מחדל."
+  },
+  "title_select_windows": {
+    "message": "בחר מהרשימה חלונות לשמירה"
+  },
+  "label_window_with_id": {
+    "message": "חלון $1"
+  },
+  "label_window_with_tab_count": {
+    "message": "$1 ($2 טאבים)"
   },
 
-  "title_restore_section": {
+  "title_restore_from_file": {
     "message": "שחזור חלון מקובץ"
   },
   "text_drag_drop_hint": {
@@ -43,7 +79,7 @@
   },
   
   "title_saved_windows": {
-    "message": "שמירות קודמות (גיבוי מקומי)"
+    "message": "חלונות שמורים"
   },
   "button_open_saved_window": {
     "message": "פתח חלון"
@@ -55,24 +91,32 @@
     "message": "נקה את כל הגיבויים המקומיים"
   },
   "text_no_saved_windows": {
-    "message": "אין חלונות שמורים"
+    "message": "אין חלונות שמורים להצגה."
+  },
+  "label_saved_window_entry": {
+    "message": "$1 | $2 טאבים"
+  },
+  "tooltip_restore_window": {
+    "message": "שחזר חלון זה"
+  },
+  "tooltip_delete_window": {
+    "message": "מחק חלון זה"
   },
   
-  "message_windows_saved_multiple": {
-    "message": "נשמרו {count} חלונות. נוצרו {count} קבצים."
-  },
   "message_window_restored": {
-    "message": "החלון שוחזר בהצלחה"
+    "message": "החלון שוחזר בהצלחה!"
   },
-
-  "error_invalid_json_file": {
-    "message": "קובץ JSON לא תקין"
+  "error_restore_window_failed": {
+    "message": "שגיאה בשחזור החלון."
   },
-  "error_restore_failed": {
-    "message": "שחזור החלונות נכשל"
+  "error_invalid_file_format": {
+    "message": "פורמט קובץ לא תקין. ודא שהוא קובץ JSON."
+  },
+  "error_file_read_failed": {
+    "message": "שגיאה בקריאת הקובץ. ודא שהוא קובץ JSON תקין."
   },
   "error_no_windows_selected": {
-    "message": "לא נבחרו חלונות"
+    "message": "לא נבחרו חלונות לשמירה."
   }
 
 }

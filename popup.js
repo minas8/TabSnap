@@ -1,4 +1,35 @@
-function applyDirection() {
+function applyI18n() {
+
+    // textContent
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        const msg = chrome.i18n.getMessage(key);
+        if (msg) el.textContent = msg;
+    });
+
+    // title (tooltips)
+    document.querySelectorAll("[data-i18n-title]").forEach(el => {
+        const key = el.dataset.i18nTitle;
+        const msg = chrome.i18n.getMessage(key);
+        if (msg) el.title = msg;
+    });
+
+    // placeholder
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        const msg = chrome.i18n.getMessage(key);
+        if (msg) el.placeholder = msg;
+    });
+
+    // innerHTML
+    document.querySelectorAll("[data-i18n-html]").forEach(el => {
+        const key = el.dataset.i18nHtml;
+        const msg = chrome.i18n.getMessage(key);
+        if (msg) el.innerHTML = msg;
+    });
+}
+
+function initI18n() {
     const lang = chrome.i18n.getUILanguage();
 
     if (lang.startsWith("he") || lang.startsWith("ar")) {
@@ -6,69 +37,33 @@ function applyDirection() {
     } else {
         document.documentElement.dir = "ltr";
     }
-}
 
-applyDirection();
+    applyI18n();
+}
 
 window.addEventListener("error", e => {
     console.error("[popup] uncaught error:", e.error);
 });
 
-// Function to handle transliteration from Hebrew to English
-function transliterateHebrew(text) {
-    const transliterationMap = {
-        'א': 'a', 'ב': 'b', 'ג': 'g', 'ד': 'd', 'ה': 'h', 'ו': 'v',
-        'ז': 'z', 'ח': 'kh', 'ט': 't', 'י': 'y', 'כ': 'k', 'ך': 'k',
-        'ל': 'l', 'מ': 'm', 'ם': 'm', 'נ': 'n', 'ן': 'n', 'ס': 's',
-        'ע': 'a', 'פ': 'p', 'ף': 'p', 'צ': 'ts', 'ץ': 'ts', 'ק': 'k',
-        'ר': 'r', 'ש': 'sh', 'ת': 't', ' ': '-'
-    };
-    let result = '';
-    for (const char of text) {
-        result += transliterationMap[char] || char;
-    }
-    return result;
-}
-
-// Function to clean and format the filename
-function createFileName(title) {
-    let baseName = title;
-    
-    if (!title || title.startsWith("chrome://") || title.trim() === "") {
-        baseName = `TabSnap_window_${Date.now()}`;
-    } else {
-        baseName = title.replace(/[!?@#$%^&*()_=+`~[\]\\{}|;:'",<>\/]/g, '').trim();
-
-        if (/[א-ת]/.test(baseName)) {
-            baseName = transliterateHebrew(baseName);
-        }
-        
-        baseName = baseName.replace(/\s+/g, '-');
-    }
-
-    if (!baseName || baseName.length > 200) {
-        baseName = `TabSnap_window_${Date.now()}`;
-    }
-
-    return `${baseName}.json`;
-}
-
 // Function to display messages to the user
-function showMessage(text, isSuccess = true) {
-    const msg = document.createElement("div");
-    msg.textContent = text;
-    msg.style.backgroundColor = isSuccess ? "#d4edda" : "#f8d7da";
-    msg.style.color = isSuccess ? "#155724" : "#721c24";
-    msg.style.border = "1px solid";
-    msg.style.borderColor = isSuccess ? "#c3e6cb" : "#f5c6cb";
-    msg.style.padding = "5px 10px";
-    msg.style.marginBottom = "10px";
-    msg.style.borderRadius = "4px";
+function showMessage(text, type = "success") {
 
-    const messageBox = document.getElementById("messageBox");
-    messageBox.innerHTML = "";
-    messageBox.appendChild(msg);
-    console.debug("[popup] showMessage:", text);
+    const icons = {
+        success: "check_circle",
+        error: "error",
+        info: "info"
+    };
+
+    const msg = document.createElement("div");
+    msg.className = `message ${type}`;
+
+    msg.innerHTML = `
+        <span class="material-icons">${icons[type] || "info"}</span>
+        <span>${text}</span>
+    `;
+
+    const box = document.getElementById("messageBox");
+    box.appendChild(msg);
 
     setTimeout(() => {
         msg.remove();
@@ -90,17 +85,18 @@ function handleFile(file) {
                     },
                     (response) => {
                         if (response?.status === "success") {
-                            showMessage("החלון שוחזר בהצלחה!");
+                            showMessage(chrome.i18n.getMessage("message_window_restored"), "success");
                         } else {
-                            showMessage(response?.message || "שגיאה בשחזור החלון.", false);
+                            showMessage(
+                                response?.message || chrome.i18n.getMessage("error_restore_window_failed"), "error");
                         }
                     }
                 );
             } else {
-                showMessage("פורמט קובץ לא תקין.", false);
+                showMessage(chrome.i18n.getMessage("error_invalid_file_format"), "error");
             }
         } catch (e) {
-            showMessage("שגיאה בקריאת הקובץ. ודא שהוא קובץ JSON תקין.", false);
+            showMessage(chrome.i18n.getMessage("error_file_read_failed"), "error");
         }
     };
     reader.readAsText(file);
@@ -122,7 +118,7 @@ function loadSavedWindows() {
 
         if (saved.length === 0) {
             const noData = document.createElement("p");
-            noData.textContent = "אין שמירות להצגה.";
+            noData.textContent = chrome.i18n.getMessage("text_no_saved_windows");
             noData.style.textAlign = "center";
             noData.style.color = "#888";
             container.appendChild(noData);
@@ -138,8 +134,10 @@ function loadSavedWindows() {
 
                 const title = document.createElement("strong");
                 const tabCount = Array.isArray(tabs) ? tabs.length : 0;
-                title.textContent =
-                    `${new Date(savedAt).toLocaleString()} | ${tabCount} tabs`;
+                title.textContent = chrome.i18n.getMessage(
+                    "label_saved_window_entry",
+                    [new Date(savedAt).toLocaleString(), tabCount]
+                );
 
                 entry.appendChild(title);
 
@@ -159,7 +157,7 @@ function loadSavedWindows() {
 
                 const restoreBtn = document.createElement("button");
                 restoreBtn.className = "restore-btn";
-                restoreBtn.title = "שחזר חלון זה";
+                restoreBtn.title = chrome.i18n.getMessage("tooltip_restore_window");
                 restoreBtn.innerHTML = '<span class="material-icons">open_in_new</span>';
                 restoreBtn.addEventListener("click", () => {
                     chrome.runtime.sendMessage({
@@ -171,7 +169,7 @@ function loadSavedWindows() {
 
                 const deleteBtn = document.createElement("button");
                 deleteBtn.className = "delete-btn";
-                deleteBtn.title = "מחק חלון זה";
+                deleteBtn.title = chrome.i18n.getMessage("tooltip_delete_window");
                 deleteBtn.innerHTML = '<span class="material-icons">delete</span>';
                 deleteBtn.addEventListener("click", () => {
                     chrome.storage.local.get(["savedWindows"], (res) => {
@@ -206,10 +204,10 @@ async function loadOpenWindowsForSelection() {
                 const urlObj = new URL(activeTab.url);
                 label = urlObj.hostname;
             } catch {
-                label = `Window ${window.id}`;
+                label = chrome.i18n.getMessage("label_window_with_id", [window.id]);
             }
         } else {
-            label = `Window ${window.id}`;
+            label = chrome.i18n.getMessage("label_window_with_id", [window.id]);
         }
 
         const wrapper = document.createElement("div");
@@ -219,7 +217,10 @@ async function loadOpenWindowsForSelection() {
         checkbox.value = window.id;
 
         const text = document.createElement("span");
-        text.textContent = ` ${label} (${window.tabs.length} tabs)`;
+        text.textContent = chrome.i18n.getMessage(
+            "label_window_with_tab_count",
+            [label, window.tabs.length]
+        );
 
         wrapper.appendChild(checkbox);
         wrapper.appendChild(text);
@@ -232,7 +233,7 @@ function executeSaveAction(action, payload = {}) {
     const closeAfterSave =
         document.getElementById("closeAfterSaveCheckbox").checked;
 
-    showMessage("שומר חלונות, נא להמתין...");
+    showMessage(chrome.i18n.getMessage("message_saving_windows"), "info");
 
     chrome.runtime.sendMessage(
         {
@@ -243,24 +244,56 @@ function executeSaveAction(action, payload = {}) {
         response => {
 
             if (!response) {
-                showMessage("שגיאה בתקשורת עם הרקע.", false);
+                showMessage(chrome.i18n.getMessage("error_background_communication"), "error");
                 return;
             }
 
             const { successCount, totalCount } = response;
 
             if (successCount > 0) {
-                showMessage(`${successCount} מתוך ${totalCount} חלונות נשמרו בהצלחה.`);
+                showMessage(chrome.i18n.getMessage(
+                    "message_windows_saved_multiple",
+                    [successCount, totalCount]
+                ), "success");
             } else {
-                showMessage("השמירה נכשלה עבור כל החלונות.", false);
+                showMessage(chrome.i18n.getMessage("error_save_all_failed"), "error");
             }
         }
     );
 }
 
+// function handleAction(action) {
+
+//     switch (action) {
+
+//         case "saveCurrent":
+//             document.getElementById("saveCurrentBtn").click();
+//             break;
+
+//         case "saveSelected":
+//             document.getElementById("saveSelectedBtn").click();
+//             break;
+
+//         case "saveAll":
+//             executeSaveAction("saveAll");
+//             break;
+//     }
+// }
+
 // Event listeners
 document.addEventListener("DOMContentLoaded", () => {
+
+    initI18n();
+
     loadSavedWindows();
+
+    // document.body.addEventListener("click", (e) => {
+
+    //     const btn = e.target.closest("[data-action]");
+    //     if (!btn) return;
+
+    //     handleAction(btn.dataset.action);
+    // });
 
     // Save Current Window
     document.getElementById("saveCurrentBtn").addEventListener("click", () => {
@@ -277,12 +310,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         const activeTab = tabs[0];
                         let extraInfo = "";
                         if (activeTab?.url.startsWith("chrome://")) {
-                            extraInfo = " עבור הטאב הזה Chrome השתמש בשם הקובץ ברירת מחדל (`download.json`) בשל מגבלות מערכת ההפעלה.";
+                            extraInfo = chrome.i18n.getMessage("message_chrome_default_filename_used");
                         }
-                        showMessage("החלון נשמר בהצלחה!" + extraInfo);
+                        showMessage(chrome.i18n.getMessage("message_window_saved_success", [extraInfo]), "success");
                     });
                 } else {
-                    showMessage("שגיאה בשמירת החלון.", false);
+                    showMessage(chrome.i18n.getMessage("error_save_window_failed"), "error");
                 }
             }
         );
@@ -316,7 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ).map(cb => parseInt(cb.value));
 
         if (selectedWindows.length === 0) {
-            showMessage("לא נבחרו חלונות לשמירה.", false);
+            showMessage(chrome.i18n.getMessage("error_no_windows_selected"), "error");
             confirmBtn.disabled = false;
             return;
         }

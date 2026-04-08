@@ -9,6 +9,9 @@
     "message": "TabSnap - Window Management"
   },
 
+  "title_save_section": {
+    "message": "Save Windows"
+  },
   "button_save_active_window": {
     "message": "Save Current Window"
   },
@@ -24,15 +27,48 @@
   "button_confirm_save": {
     "message": "Confirm Save"
   },
+  "default_file_prefix": {
+    "message": "TabSnap_window_$1"
+  },
+  "message_saving_windows": {
+    "message": "Saving windows, please wait..."
+  },
+  "message_windows_saved_multiple": {
+    "message": "Saved $1 out of $2 windows successfully."
+  },
+  "error_save_all_failed": {
+    "message": "Saving failed for all windows."
+  },
+  "error_background_communication": {
+    "message": "Communication error with background service."
+  },
+  "message_chrome_default_filename_used": {
+    "message": " For this tab Chrome used the default filename (`download.json`) due to OS limitations."
+  },
+  "message_window_saved_success": {
+    "message": "Window saved successfully! $1"
+  },
+  "error_save_window_failed": {
+    "message": "Failed to save window."
+  },
 
   "checkbox_close_windows_after_save": {
     "message": "Close windows after saving"
   },
-  "label_select_windows": {
-    "message": "Select windows to save"
+  "multiple_windows_comment": {
+    "message": "Note: When saving multiple windows, if Chrome is set to ask where to save each file, the files may be saved to the default Downloads folder with default names."
+  },
+  "title_select_windows": {
+    "message": "Select Windows to Save"
+  },
+  "label_window_with_id": {
+    "message": "Window $1"
+  },
+  "label_window_with_tab_count": {
+    "message": "$1 ($2 tabs)"
   },
 
-  "title_restore_section": {
+  "title_restore_from_file": {
     "message": "Restore"
   },
   "text_drag_drop_hint": {
@@ -55,21 +91,29 @@
     "message": "Clear All Local Backups"
   },
   "text_no_saved_windows": {
-    "message": "No saved windows yet"
+    "message": "No saved windows to display."
+  },
+  "label_saved_window_entry": {
+    "message": "$1 | $2 tabs"
+  },
+  "tooltip_restore_window": {
+    "message":  "Restore this window"
+  },
+  "tooltip_delete_window": {
+    "message":  "Delete this window"
   },
   
-  "message_windows_saved_multiple": {
-    "message": "Saved {count} windows. Created {count} files."
-  },
   "message_window_restored": {
     "message": "Window restored successfully"
   },
-
-  "error_invalid_json_file": {
-    "message": "Invalid JSON file"
+  "error_restore_window_failed": {
+    "message": "Failed to restore window."
   },
-  "error_restore_failed": {
-    "message": "Failed to restore windows"
+  "error_invalid_file_format": {
+    "message": "Invalid file format. Make sure it is a valid JSON file."
+  },
+  "error_file_read_failed": {
+    "message": "Failed to read file. Make sure it is a valid JSON file."
   },
   "error_no_windows_selected": {
     "message": "No windows selected"

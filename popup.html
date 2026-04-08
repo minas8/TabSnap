@@ -201,24 +201,56 @@
         margin-block: 10px;
         font-size: 13px;
       }
+
+      .message {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .message .material-icons {
+        font-size: 16px;
+      }
     </style>
   </head>
   <body>
     <h1 data-i18n="title_main"></h1>
 
     <!-- Save Section -->
-    <h3 data-i18n="title_save_section">שמירת חלונות</h3>
+    <h3 data-i18n="title_save_section"></h3>
 
     <div class="main-buttons">
-      <button id="saveCurrentBtn" data-i18n="button_save_active_window">
-        שמור חלון נוכחי
-      </button>
-      <button id="saveSelectedBtn" data-i18n="button_save_selected_windows">
-        שמור חלונות נבחרים
-      </button>
-      <button id="saveAllBtn" data-i18n="button_save_all_windows">
-        שמור את כל החלונות
-      </button>
+      <button
+        id="saveCurrentBtn"
+        data-action="saveCurrent"
+        data-i18n="button_save_active_window"
+      ></button>
+      <button
+        id="saveSelectedBtn"
+        data-action="saveSelected"
+        data-i18n="button_save_selected_windows"
+      ></button>
+      <button
+        id="saveAllBtn"
+        data-action="saveAll"
+        data-i18n="button_save_all_windows"
+      ></button>
       <!-- <button id="sendSingleByEmailBtn" data-i18n="button_send_window_email"></button> -->
     </div>
 
@@ -228,17 +260,13 @@
         for="closeAfterSaveCheckbox"
         data-i18n="checkbox_close_windows_after_save"
       >
-        סגור חלונות לאחר השמירה
       </label>
     </div>
 
-    <div class="note">
-      הערה: בשמירה של חלונות מרובים, אם הדפדפן מוגדר לבקש מיקום שמירה לכל קובץ,
-      ייתכן שהקבצים יישמרו בתיקיית ההורדות הראשית ובשם ברירת מחדל.
-    </div>
+    <div class="note" data-i18n="multiple_windows_comment"></div>
 
     <div id="windowSelectionArea" style="display: none">
-      <h3 data-i18n="title_select_windows">בחר מהרשימה חלונות לשמירה</h3>
+      <h3 data-i18n="title_select_windows"></h3>
       <div class="window-selector" id="windowSelectorList"></div>
       <div class="main-buttons">
         <button
@@ -251,22 +279,23 @@
     <div id="messageBox"></div>
 
     <!-- Restore Section -->
-    <h3 data-i18n="title_restore_from_file">שחזור חלון מקובץ</h3>
+    <h3 data-i18n="title_restore_from_file"></h3>
 
     <div class="restore-area" id="restoreArea">
       <p>
-        גרור קובץ JSON לכאן או
-        <a href="#" id="browseLink">בחר קובץ</a>
+        <span data-i18n="text_drag_drop_hint"></span>
+        <a href="#" id="browseLink" data-i18n="button_choose_file"></a>
       </p>
       <input type="file" id="filePicker" accept=".json" />
     </div>
 
     <!-- Saved Windows Section -->
     <div class="section-header">
-      <h2 data-i18n="title_saved_windows">חלונות שמורים</h2>
-      <button id="clearLocalBtn" data-i18n="button_clear_local_backups">
-        נקה את כל הגיבויים המקומיים
-      </button>
+      <h2 data-i18n="title_saved_windows"></h2>
+      <button
+        id="clearLocalBtn"
+        data-i18n="button_clear_local_backups"
+      ></button>
     </div>
 
     <div id="savedList"></div>
